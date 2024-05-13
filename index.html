@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Steganografi RC4 and LSB</title>
+  <meta property="og:title" content="Steganografi RC4 and LSB" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div>
+    <div id="Section-1" class="container" style="display: block;">
+      <div class="text">
+        Steganografi RC4 and LSB
+      </div>
+      <br>
+      <form action="#" id="forms">
+        <div class="form-label">
+          <label for="">Please Select what you want :</label>
+        </div>
+        <div class="form-row submit-btn">
+          <div class="input-data">
+            <div class="inner"></div>
+            <input id="encrypt_now" type="button" value="Encrypt">
+          </div>
+          <div class="input-data">
+            <div class="inner"></div>
+            <input id="decrypt_now" type="button" value="Decrypt">
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div id="Section-2" class="container" style="display: none;">
+      <div class="text">
+        Steganografi RC4 and LSB
+      </div>
+      <form action="#" id="forms_encrypt">
+        <div class="form-row" style="margin:16px 0">
+          <div class="input-data">
+            <input type="file" id="fileInput_enc" accept="image/*" onchange="displayImage_enc()">
+          </div>
+        </div>
+        <div class="form-row" style="margin: 16px 0">
+          <div class="">
+            <img id="imageDisplay_enc" style="width:128px;height:auto;" src="" alt="Image Display" hidden>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-data textarea">
+            <textarea id="messageToEncrypt" rows="8" cols="80" required name="message"></textarea>
+            <br />
+            <div class="underline"></div>
+            <label for="">Write your message To Encrypt</label>
+            <br />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-data">
+            <input id="encryptkey" type="text" name="Password" required>
+            <div class="underline"></div>
+            <label for="">Passkey</label>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-data textarea">
+            <textarea id="encryptedText" rows="8" cols="80" required name="encryptedText"></textarea>
+            <br />
+            <div class="underline"></div>
+            <label for="">Output</label>
+            <br />
+          </div>
+        </div>
+        <div class="form-row submit-btn">
+          <div class="input-data">
+            <div class="inner"></div>
+            <input id="encrypt_button" type="button" value="Encrypt">
+          </div>
+          <div class="input-data">
+            <div class="inner"></div>
+            <input id="back" type="button" value="Back">
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div id="Section-3" class="container" style="display: none;">
+      <div class="text">
+        Steganografi RC4 and LSB
+      </div>
+      <form action="#" id="forms_decrypt">
+        <div class="form-row" style="margin:16px 0">
+          <div class="input-data">
+            <input type="file" id="fileInput_dec" accept="image/*" onchange="displayImage_dec()">
+          </div>
+        </div>
+        <div class="form-row" style="margin: 16px 0">
+          <div class="">
+            <img id="imageDisplay_dec" style="width:128px;height:auto;" src="" alt="Image Display" hidden>
+          </div>
+        </div>
+        <div class="form-row">
+            <div class="input-data textarea">
+              <textarea id="encryptedMessage" rows="8" cols="80" required name="encryptedMessage"></textarea>
+              <br />
+              <div class="underline"></div>
+              <label for="">Encrypted Message from image</label>
+              <br />
+            </div>
+          </div>
+        <div class="form-row">
+          <div class="input-data">
+            <input id="decryptkey" type="text" name="decryptkey" required>
+            <div class="underline"></div>
+            <label for="">passkey</label>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-data textarea">
+            <textarea id="decryptedText" rows="8" cols="80" required name="decryptedText"></textarea>
+            <br />
+            <div class="underline"></div>
+            <label for="">Output</label>
+            <br />
+          </div>
+        </div>
+        <div class="form-row submit-btn">
+          <div class="input-data">
+            <div class="inner"></div>
+            <input id="decrypt_button" type="button" value="Decrypt">
+          </div>
+          <div class="input-data">
+            <div class="inner"></div>
+            <input id="back_2" type="button" value="Back">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- <script src="RC4_.js"></script> -->
+  <script src="RC4_encryption.js"></script>
+  <script src="RC4_decryption.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+  <script>
+    function maxCapacity() {
+      var fileInput = document.getElementById('fileInput');
+      var file = fileInput.files[0];
+
+      if (!file) {
+        alert('No file selected');
+        return;
+      }
+
+      var reader = new FileReader();
+      reader.onload = function (event) {
+        var img = new Image();
+        img.onload = function () {
+          var canvas = document.createElement('canvas');
+          var ctx = canvas.getContext('2d');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0, img.width, img.height);
+          var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          var nBytes = canvas.width * canvas.height * 3 / 8;
+          console.log("Maximum characters:", nBytes);
+          alert("Maximum characters: " + nBytes);
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function displayImage_enc() {
+      var fileInput = document.getElementById('fileInput_enc');
+      var file = fileInput.files[0];
+
+      if (!file) {
+        alert('No file selected');
+        return;
+      }
+
+      var reader = new FileReader();
+      reader.onload = function (event) {
+        var imgDisplay = document.getElementById('imageDisplay_enc');
+        imgDisplay.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+      $("#imageDisplay_enc").fadeIn();
+    }
+
+    function displayImage_dec() {
+      var fileInput = document.getElementById('fileInput_dec');
+      var file = fileInput.files[0];
+
+      if (!file) {
+        alert('No file selected');
+        return;
+      }
+
+      var reader = new FileReader();
+      reader.onload = function (event) {
+        var imgDisplay = document.getElementById('imageDisplay_dec');
+        imgDisplay.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+      $("#imageDisplay_dec").fadeIn();
+    }
+
+    $(document).ready(function () {
+      // Close the form and hide the overlay
+      $('#encrypt_now').on('click', function () {
+        $("#Section-1").fadeOut();
+        $(".overlay").fadeOut();
+        $("#Section-2").fadeIn();
+        $(".overlay").fadeIn();
+      });
+      $('#decrypt_now').on('click', function () {
+        $("#Section-1").fadeOut();
+        $(".overlay").fadeOut();
+        $("#Section-3").fadeIn();
+        $(".overlay").fadeIn();
+      });
+      $('#back').on('click', function () {
+        $("#Section-2").fadeOut();
+        $(".overlay").fadeOut();
+        $("#Section-1").fadeIn();
+        $(".overlay").fadeIn();
+        $("#imageDisplay_enc").fadeOut();
+        $("#forms_encrypt")[0].reset(); // Reset the form
+      });
+      $('#back_2').on('click', function () {
+        $("#Section-3").fadeOut();
+        $(".overlay").fadeOut();
+        $("#Section-1").fadeIn();
+        $(".overlay").fadeIn();
+        $("#imageDisplay_dec").fadeOut();
+        $("#forms_decrypt")[0].reset(); // Reset the form
+      });
+    });
+  </script>
+
+</body>
+
+</html>
